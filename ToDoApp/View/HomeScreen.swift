@@ -9,19 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct HomeScreen: View {
-    @Query var toDos: [ToDoItem]
+    @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        VStack {
-            Text("Tap here to create ToDo")
-            Button("Create") {
-                createToDo()
-            }
-            List {
-                ForEach(toDos) { toDo in
-                    Text(toDo.title)
-                }
+        List {
+            ForEach($toDoItemViewModel.toDoItems) { $toDo in
+                ToDoItemRowView(toDoItem: $toDo)
             }
         }
     }
