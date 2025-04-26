@@ -12,20 +12,20 @@ struct HomeScreen: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     
     var body: some View {
-        NavigationView {
-            ZStack {
+        NavigationStack {
                 List {
                     ForEach($toDoItemViewModel.toDoItems) { $toDo in
                         ToDoItemRowView(toDoItem: $toDo)
                     }
                 }
-                NavigationLink(destination: CreateToDoView()) {
-                    Image(systemName: "plus.diamond")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                        .padding()
-                        .font(.system(size: 68))
-                }
-            }
+                .overlay(
+                    NavigationLink(destination: CreateToDoView()) {
+                        Image(systemName: "plus.diamond")
+                            .font(.system(size: 68))
+                            .padding()
+                    },
+                    alignment: .bottomTrailing
+                )
             .navigationTitle("TO-DOs")
         }
         .onAppear(){
