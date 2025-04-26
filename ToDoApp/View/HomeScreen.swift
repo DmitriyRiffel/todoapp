@@ -28,6 +28,9 @@ struct HomeScreen: View {
             }
             .navigationTitle("TO-DOs")
         }
+        .onAppear(){
+            toDoItemViewModel.fetchItems()
+        }
     }
 
 }

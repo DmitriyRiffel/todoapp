@@ -10,7 +10,6 @@ import SwiftData
 
 
 class ToDoItemViewModel: ObservableObject {
-    
     private let context: ModelContext
     @Published var toDoItems: [ToDoItem] = [
         ToDoItem(title: "Title 1")
@@ -29,6 +28,15 @@ class ToDoItemViewModel: ObservableObject {
         }
     }
     
+    func fetchItems() {
+        do {
+            let descriptor = FetchDescriptor<ToDoItem>()
+            toDoItems = try context.fetch(descriptor)
+        } catch {
+            print("Fetch failed")
+        }
+    }
+    
     func deleteItems(at indexSet: IndexSet) {
         toDoItems.remove(atOffsets: indexSet)
     }
@@ -36,6 +44,7 @@ class ToDoItemViewModel: ObservableObject {
     func createItem(title: String) {
         let newItem = ToDoItem(title: title)
         context.insert(newItem)
+        fetchItems()
     }
 }
 

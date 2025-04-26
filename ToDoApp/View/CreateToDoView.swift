@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CreateToDoView: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
+    @Environment(\.dismiss) private var dismiss
     @State private var title: String = ""
     
     var body: some View {
@@ -22,6 +23,7 @@ struct CreateToDoView: View {
             
             Button("Save") {
                 toDoItemViewModel.createItem(title: title)
+                dismiss()
             }
             .disabled(title.isEmpty)
             .frame(maxWidth: .infinity)
@@ -30,6 +32,7 @@ struct CreateToDoView: View {
             .foregroundStyle(title.isEmpty ? Color.gray : Color.black)
             .cornerRadius(10)
             .padding(.horizontal)
+            Spacer()
         }
     }
 }
