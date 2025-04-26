@@ -6,14 +6,19 @@
 //
 
 import Foundation
+import SwiftData
+
 
 class ToDoItemViewModel: ObservableObject {
     
+    private let context: ModelContext
     @Published var toDoItems: [ToDoItem] = [
-        ToDoItem(title: "Title 1"),
-        ToDoItem(title: "Title 2", isCompleted: true),
-        ToDoItem(title: "Title 3")
+        ToDoItem(title: "Title 1")
     ]
+    
+    init(context: ModelContext) {
+        self.context = context
+    }
     
     func reoderItems() {
         toDoItems.sort {lhs, rhs in
@@ -26,6 +31,11 @@ class ToDoItemViewModel: ObservableObject {
     
     func deleteItems(at indexSet: IndexSet) {
         toDoItems.remove(atOffsets: indexSet)
+    }
+    
+    func createItem(title: String) {
+        let newItem = ToDoItem(title: title)
+        context.insert(newItem)
     }
 }
 

@@ -10,18 +10,32 @@ import SwiftData
 
 struct HomeScreen: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
-    @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        List {
-            ForEach($toDoItemViewModel.toDoItems) { $toDo in
-                ToDoItemRowView(toDoItem: $toDo)
+        NavigationView {
+            ZStack {
+                List {
+                    ForEach($toDoItemViewModel.toDoItems) { $toDo in
+                        ToDoItemRowView(toDoItem: $toDo)
+                    }
+                }
+                NavigationLink(destination: CreateToDoView()) {
+                    Image(systemName: "plus.diamond")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                        .padding()
+                        .font(.system(size: 68))
+                }
             }
+            .navigationTitle("TO-DOs")
         }
     }
-    
-    func createToDo() {
-        let toDoItem = ToDoItem(title: "Buy milk")
-        modelContext.insert(toDoItem)
-    }
+
+}
+
+#Preview {
+    let container = try! ModelContainer(for: ToDoItem.self)
+    let context = ModelContext(container)
+    let viewModel = ToDoItemViewModel(context: context)
+    HomeScreen()
+        .environmentObject(viewModel)
 }

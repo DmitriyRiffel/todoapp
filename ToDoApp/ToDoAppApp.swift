@@ -13,8 +13,18 @@ struct ToDoAppApp: App {
     var body: some Scene {
         WindowGroup {
             HomeScreen()
-                .environmentObject(ToDoItemViewModel())
+                .environmentObject(
+                    ToDoItemViewModel(context: ModelContext(modelContainer))
+                )
         }
         .modelContainer(for: ToDoItem.self)
+    }
+    
+    private var modelContainer: ModelContainer {
+        do {
+            return try ModelContainer(for: ToDoItem.self)
+        } catch {
+            fatalError("Fehler beim Initialisieren des ModelContainers: \(error)")
+        }
     }
 }
