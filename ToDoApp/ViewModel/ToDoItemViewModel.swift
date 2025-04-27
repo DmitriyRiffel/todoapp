@@ -37,8 +37,9 @@ class ToDoItemViewModel: ObservableObject {
         }
     }
     
-    func deleteItems(at indexSet: IndexSet) {
-        toDoItems.remove(atOffsets: indexSet)
+    func deleteItems(toDoItem: ToDoItem) {
+        context.delete(toDoItem)
+        fetchItems()
     }
     
     func createItem(title: String) {

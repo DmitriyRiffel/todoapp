@@ -17,6 +17,11 @@ struct HomeScreen: View {
                     ForEach($toDoItemViewModel.toDoItems) { $toDo in
                         ToDoItemRowView(toDoItem: $toDo)
                     }
+                    .onDelete { IndexSet in
+                        for index in IndexSet {
+                            toDoItemViewModel.deleteItems(toDoItem: toDoItemViewModel.toDoItems[index])
+                        }
+                    }
                 }
                 .overlay(
                     NavigationLink(destination: CreateToDoView()) {
