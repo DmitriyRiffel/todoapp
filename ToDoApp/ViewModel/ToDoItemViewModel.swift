@@ -51,5 +51,21 @@ class ToDoItemViewModel: ObservableObject {
         context.insert(newItem)
         fetchItems()
     }
+    
+    func amountOfItems(artOfSorting: ArtOfSorting) -> Int {
+        if artOfSorting == .all{
+            return toDoItems.count
+        } else if artOfSorting == .completed {
+            let newArrayOfItems = toDoItems.filter { $0.isCompleted == true }
+            return newArrayOfItems.count
+        } else {
+            let newArrayOfItems = toDoItems.filter { $0.isCompleted == false }
+            return newArrayOfItems.count
+        }
+    }
+}
+
+enum ArtOfSorting{
+    case all, completed, scheduled
 }
 

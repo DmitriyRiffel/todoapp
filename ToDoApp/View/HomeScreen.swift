@@ -11,34 +11,87 @@ import SwiftData
 struct HomeScreen: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     
-    var body: some View {
+    let columns = [
+        GridItem(.adaptive(minimum: 180))
+    ]
+    
+    var body: some View {        
         NavigationStack {
-                List {
-                    ForEach($toDoItemViewModel.toDoItems) { $toDo in
-                        ToDoItemRowView(toDoItem: $toDo)
-                    }
-                    .onDelete { IndexSet in
-                        for index in IndexSet {
-                            toDoItemViewModel.deleteItems(toDoItem: toDoItemViewModel.toDoItems[index])
+            LazyVGrid(columns: columns) {
+                NavigationLink(destination: ScheduledView()){
+                    HStack(alignment: .top){
+                        VStack(alignment: .leading){
+                            Image(systemName: "calendar")
+                            Spacer()
+                            Text("Scheduled")
                         }
+                        .font(.title2)
+                        Spacer()
+                        Text("\(toDoItemViewModel.amountOfItems(artOfSorting: .scheduled))")
+                            .font(.title)
                     }
+                    .padding(10)
+                    
                 }
-                .overlay(
-                    NavigationLink(destination: CreateToDoView()) {
-                        Image(systemName: "plus.diamond")
-                            .font(.system(size: 68))
-                            .padding()
-                    },
-                    alignment: .bottomTrailing
-                )
+                .background(Color.yellow)
+                .cornerRadius(10)
+                
+                NavigationLink(destination: CompletedView()){
+                    HStack(alignment: .top){
+                        VStack(alignment: .leading){
+                            Image(systemName: "checkmark")
+                            Spacer()
+                            Text("Completed")
+                        }
+                        .font(.title2)
+                        Spacer()
+                        Text("\(toDoItemViewModel.amountOfItems(artOfSorting: .completed))")
+                            .font(.title)
+                    }
+                    .padding(10)
+                }
+                .background(Color.yellow)
+                .cornerRadius(10)
+                
+                NavigationLink(destination: AllView()){
+                    HStack(alignment: .top){
+                        VStack(alignment: .leading){
+                            Image(systemName: "archivebox")
+                            Spacer()
+                            Text("All")
+                        }
+                        .font(.title2)
+                        Spacer()
+                        Text("\(toDoItemViewModel.amountOfItems(artOfSorting: .all))")
+                            .font(.title)
+                    }
+                    .padding(10)
+                }
+                .background(Color.yellow)
+                .cornerRadius(10)
+                
+            }
+            .padding()
             .navigationTitle("TO-DOs")
+            Spacer()
+                
         }
+        .overlay(
+            NavigationLink(destination: CreateToDoView()) {
+                Image(systemName: "plus.diamond")
+                    .font(.system(size: 68))
+                    .foregroundStyle(Color.blue)
+                    .padding()
+            },
+            alignment: .bottomTrailing
+        )
         .onAppear(){
             toDoItemViewModel.fetchItems()
         }
     }
 
 }
+
 
 #Preview {
     let container = try! ModelContainer(for: ToDoItem.self)
