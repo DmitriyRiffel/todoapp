@@ -15,7 +15,7 @@ struct HomeScreen: View {
         GridItem(.adaptive(minimum: 180))
     ]
     
-    var body: some View {        
+    var body: some View {
         NavigationStack {
             LazyVGrid(columns: columns) {
                 NavigationLink(destination: ScheduledView()){
@@ -69,24 +69,28 @@ struct HomeScreen: View {
                 }
                 .background(Color.yellow)
                 .cornerRadius(10)
-                
             }
             .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            
+            .overlay(
+                NavigationLink(destination: CreateToDoView()) {
+                    Image(systemName: "plus.diamond")
+                        .font(.system(size: 48))
+                        .padding()
+                        .background(Circle().fill(Color.blue))
+                        .foregroundColor(.white)
+                        .shadow(radius: 4)
+                        .padding()
+                },
+                alignment: .bottomTrailing
+            )
+            
             .navigationTitle("TO-DOs")
-            Spacer()
-                
         }
-        .overlay(
-            NavigationLink(destination: CreateToDoView()) {
-                Image(systemName: "plus.diamond")
-                    .font(.system(size: 68))
-                    .foregroundStyle(Color.blue)
-                    .padding()
-            },
-            alignment: .bottomTrailing
-        )
+
         .onAppear(){
-            toDoItemViewModel.fetchItems()
+//            toDoItemViewModel.fetchItems()
         }
     }
 

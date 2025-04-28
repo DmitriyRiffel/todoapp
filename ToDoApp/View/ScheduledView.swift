@@ -14,7 +14,9 @@ struct ScheduledView: View {
         NavigationStack {
             List {
                 ForEach($toDoItemViewModel.toDoItems) { $toDo in
-                    ToDoItemRowView(toDoItem: $toDo)
+                    if !$toDo.wrappedValue.isCompleted {
+                        ToDoItemRowView(toDoItem: $toDo)
+                    }
                 }
                 .onDelete { IndexSet in
                     for index in IndexSet {
@@ -25,7 +27,11 @@ struct ScheduledView: View {
             .overlay(
                 NavigationLink(destination: CreateToDoView()) {
                     Image(systemName: "plus.diamond")
-                        .font(.system(size: 68))
+                        .font(.system(size: 48))
+                        .padding()
+                        .background(Circle().fill(Color.blue))
+                        .foregroundColor(.white)
+                        .shadow(radius: 4)
                         .padding()
                 },
                 alignment: .bottomTrailing
