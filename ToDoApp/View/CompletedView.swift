@@ -6,13 +6,45 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CompletedView: View {
+    @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                ForEach($toDoItemViewModel.toDoItems) { $toDo in
+                    if $toDo.wrappedValue.isCompleted {
+                        ToDoItemRowView(toDoItem: $toDo)
+                    }
+                }
+                .onDelete { IndexSet in
+                    for index in IndexSet {
+                        toDoItemViewModel.deleteItems(toDoItem: toDoItemViewModel.toDoItems[index])
+                    }
+                }
+            }
+            .overlay(
+                NavigationLink(destination: CreateToDoView()) {
+                    Image(systemName: "plus.diamond")
+                        .font(.system(size: 48))
+                        .padding()
+                        .background(Circle().fill(Color.blue))
+                        .foregroundColor(.white)
+                        .shadow(radius: 4)
+                        .padding()
+                },
+                alignment: .bottomTrailing
+            )
+            .navigationTitle("Scheduled")
+        }
     }
 }
 
 #Preview {
+    let container = try! ModelContainer(for: ToDoItem.self)
+    let context = ModelContext(container)
+    let viewModel = ToDoItemViewModel(context: context)
     CompletedView()
+        .environmentObject(viewModel)
 }

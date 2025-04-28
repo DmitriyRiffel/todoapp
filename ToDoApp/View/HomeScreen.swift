@@ -90,7 +90,7 @@ struct HomeScreen: View {
         }
 
         .onAppear(){
-//            toDoItemViewModel.fetchItems()
+            toDoItemViewModel.fetchItems()
         }
     }
 
