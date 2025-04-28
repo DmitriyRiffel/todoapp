@@ -11,6 +11,7 @@ struct CreateToDoView: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var title: String = ""
+    @State private var note: String = ""
     
     var body: some View {
         NavigationStack{
@@ -19,10 +20,16 @@ struct CreateToDoView: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
                 .padding()
-                .navigationTitle("Create TO-DO")
+            TextField("Note", text: $note, axis: .vertical)
+                .lineLimit(5)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+                .padding(.horizontal)
             
+            Spacer()
             Button("Save") {
-                toDoItemViewModel.createItem(title: title)
+                toDoItemViewModel.createItem(title: title, note: note)
                 dismiss()
             }
             .disabled(title.isEmpty)
@@ -33,6 +40,8 @@ struct CreateToDoView: View {
             .cornerRadius(10)
             .padding(.horizontal)
             Spacer()
+            
+                .navigationTitle("Create TO-DO")
         }
     }
 }

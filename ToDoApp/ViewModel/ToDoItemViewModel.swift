@@ -42,8 +42,12 @@ class ToDoItemViewModel: ObservableObject {
         fetchItems()
     }
     
-    func createItem(title: String) {
-        let newItem = ToDoItem(title: title)
+    func createItem(title: String, note: String) {
+        var newItem: ToDoItem
+        if note == "" {
+            newItem = ToDoItem(title: title)
+        }
+        newItem = ToDoItem(title: title, note: note)
         context.insert(newItem)
         fetchItems()
     }

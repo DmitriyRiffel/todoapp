@@ -20,11 +20,18 @@ struct ToDoItemRowView: View {
                 Image(systemName: toDoItem.isCompleted ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(toDoItem.isCompleted ? Color.green : Color.red)
             }
-
-            Text(toDoItem.title)
-                .font(.headline)
-                .strikethrough(toDoItem.isCompleted ? true : false)
-                .foregroundStyle(toDoItem.isCompleted ? Color.gray : .primary)
+            VStack(alignment: .leading){
+                Text(toDoItem.title)
+                    .font(.headline)
+                if let note = toDoItem.note {
+                    if note != "" {
+                        Text(note)
+                            .font(.subheadline)
+                    }
+                }
+            }
+            .strikethrough(toDoItem.isCompleted ? true : false)
+            .foregroundStyle(toDoItem.isCompleted ? Color.gray : .primary)
             Spacer()
         }
     }
@@ -34,9 +41,9 @@ struct ToDoItemRowView: View {
     }
 }
 
-struct TimerCardView_Previews: PreviewProvider {
+struct ToDoItemRowView_Provider: PreviewProvider {
     static var previews: some View {
-        ToDoItemRowView(toDoItem: .constant(ToDoItem(title:"Test title", isCompleted: true)))
+        ToDoItemRowView(toDoItem: .constant(ToDoItem(title:"Test with Note", isCompleted: true)))
             .previewLayout(.fixed(width: 300, height: 70))
     }
 }
