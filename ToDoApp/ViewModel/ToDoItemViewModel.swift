@@ -37,7 +37,7 @@ class ToDoItemViewModel: ObservableObject {
         }
     }
     
-    func deleteItems(toDoItem: ToDoItem) {
+    func deleteItem(toDoItem: ToDoItem) {
         context.delete(toDoItem)
         fetchItems()
     }

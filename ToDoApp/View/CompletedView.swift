@@ -20,7 +20,7 @@ struct CompletedView: View {
                 }
                 .onDelete { IndexSet in
                     for index in IndexSet {
-                        toDoItemViewModel.deleteItems(toDoItem: toDoItemViewModel.toDoItems[index])
+                        toDoItemViewModel.deleteItem(toDoItem: toDoItemViewModel.toDoItems[index])
                     }
                 }
             }

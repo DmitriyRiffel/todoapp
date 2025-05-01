@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ToDoItemRowView: View {
     @Binding var toDoItem: ToDoItem
-    
+    @State private var isEditing: Bool = false
+    @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     var body: some View {
         HStack() {
             Button {
@@ -23,16 +24,30 @@ struct ToDoItemRowView: View {
             VStack(alignment: .leading){
                 Text(toDoItem.title)
                     .font(.headline)
-                if let note = toDoItem.note {
-                    if note != "" {
-                        Text(note)
+                    if toDoItem.note != "" {
+                        Text(toDoItem.note)
                             .font(.subheadline)
                     }
-                }
             }
             .strikethrough(toDoItem.isCompleted ? true : false)
             .foregroundStyle(toDoItem.isCompleted ? Color.gray : .primary)
             Spacer()
+        }
+        .swipeActions {
+            Button {
+                isEditing.toggle()
+            } label: {
+                Label("Edit", systemImage: "pencil")
+            }
+            .tint(Color.blue)
+            Button(role: .destructive) {
+                toDoItemViewModel.deleteItem(toDoItem: toDoItem)
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            UpdateToDoView(toDoItem: toDoItem)
         }
     }
     

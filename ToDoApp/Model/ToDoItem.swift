@@ -11,7 +11,7 @@ import SwiftData
 @Model
 class ToDoItem: Identifiable {
     var title: String
-    var note: String?
+    var note: String = ""
     var isCompleted: Bool = false
     var id: String
     
