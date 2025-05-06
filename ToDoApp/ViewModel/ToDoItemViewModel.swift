@@ -63,6 +63,12 @@ class ToDoItemViewModel: ObservableObject {
             return newArrayOfItems.count
         }
     }
+    
+    func updateItem(toDoItem: ToDoItem, title: String, note: String) {
+        toDoItem.title = title
+        toDoItem.note = note
+        fetchItems()
+    }
 }
 
 enum ArtOfSorting{

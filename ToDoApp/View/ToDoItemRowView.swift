@@ -47,7 +47,7 @@ struct ToDoItemRowView: View {
             }
         }
         .sheet(isPresented: $isEditing) {
-            UpdateToDoView(toDoItem: toDoItem)
+            UpdateToDoView(toDoItem: $toDoItem)
         }
     }
     

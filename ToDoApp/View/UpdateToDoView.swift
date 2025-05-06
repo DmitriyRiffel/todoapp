@@ -11,25 +11,35 @@ import SwiftData
 struct UpdateToDoView: View {
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
     @Environment(\.dismiss) private var dismiss
-    @Bindable var toDoItem: ToDoItem
+    @Binding var toDoItem: ToDoItem
+    
+    @State private var newTitle: String = ""
+    @State private var newNote: String = ""
     
     var body: some View {
         NavigationStack{
-            TextField("Title", text: $toDoItem.title)
+            TextField("Title", text: $newTitle)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
                 .padding()
-            TextField("Note", text: $toDoItem.note, axis: .vertical)
+                .onAppear {
+                    newTitle = toDoItem.title
+                }
+            TextField("Note", text: $newNote, axis: .vertical)
                 .lineLimit(5)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal)
+                .onAppear {
+                    newNote = toDoItem.note
+                }
             
             Spacer()
             Button("Edit") {
-                dismiss() // here is nothing but dismiss because of the @Bindable
+                toDoItemViewModel.updateItem(toDoItem: toDoItem, title: newTitle, note: newNote)
+                dismiss()
             }
             .disabled(toDoItem.title.isEmpty)
             .frame(maxWidth: .infinity)
@@ -43,12 +53,14 @@ struct UpdateToDoView: View {
                 .navigationTitle("Update TO-DO")
         }
     }
+    
+    
 }
 
-#Preview {
-    let container = try! ModelContainer(for: ToDoItem.self)
-    let context = ModelContext(container)
-    let viewModel = ToDoItemViewModel(context: context)
-    UpdateToDoView(toDoItem: ToDoItem(title: "Test title", note: "Test note"))
-        .environmentObject(viewModel)
-}
+//#Preview {
+//    let container = try! ModelContainer(for: ToDoItem.self)
+//    let context = ModelContext(container)
+//    let viewModel = ToDoItemViewModel(context: context)
+//    UpdateToDoView(toDoItem: ToDoItem
+//        .environmentObject(viewModel)
+//}
