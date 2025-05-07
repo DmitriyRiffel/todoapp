@@ -15,7 +15,7 @@ struct AllView: View {
             List {
                 ForEach($toDoItemViewModel.toDoItems) { $toDo in
                     ToDoItemRowView(toDoItem: $toDo) {
-                        toDoItemViewModel.reoderItems()
+                        toDoItemViewModel.reorderAllItems()
                     }
                 }
                 .onDelete { IndexSet in
@@ -37,7 +37,7 @@ struct AllView: View {
                 alignment: .bottomTrailing
             )
             .onAppear {
-                toDoItemViewModel.reoderItems()
+                toDoItemViewModel.reorderAllItems()
             }
             .navigationTitle("All")
         }

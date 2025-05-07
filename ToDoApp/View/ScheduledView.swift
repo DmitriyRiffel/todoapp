@@ -16,7 +16,7 @@ struct ScheduledView: View {
                 ForEach($toDoItemViewModel.toDoItems) { $toDo in
                     if !$toDo.wrappedValue.isCompleted {
                         ToDoItemRowView(toDoItem: $toDo) {
-                            
+                            toDoItemViewModel.reorderAllItems()
                         }
                     }
                 }
@@ -38,6 +38,9 @@ struct ScheduledView: View {
                 },
                 alignment: .bottomTrailing
             )
+            .onAppear {
+                toDoItemViewModel.reorderAllItems()
+            }
             .navigationTitle("Scheduled")
         }
     }

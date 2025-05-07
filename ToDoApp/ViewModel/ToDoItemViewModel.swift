@@ -19,12 +19,26 @@ class ToDoItemViewModel: ObservableObject {
         self.context = context
     }
     
-    func reoderItems() {
-        toDoItems.sort {lhs, rhs in
-            if lhs.isCompleted == false && rhs.isCompleted == true {
-                return true
+    func reorderAllItems() {
+        //1. Variante
+//        let incompleted = toDoItems
+//            .filter { !$0.isCompleted }
+//            .sorted { $0.title < $1.title }
+//        
+//        let completed = toDoItems
+//            .filter { $0.isCompleted }
+//            .sorted { $0.title < $1.title }
+//        toDoItems = incompleted + completed
+        
+        /*
+         2. Variante
+         Erstmal wird nach completed/incompleted sortiert in dem Vergliechen wird, ob bei lhs und rhs isCompleted gleich ist, wenn ja, dann werden sie alphabetisch sortiert.
+         */
+        toDoItems.sort { lhs, rhs in
+            if lhs.isCompleted != rhs.isCompleted {
+                return !lhs.isCompleted
             }
-            return false
+            return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending
         }
     }
     
