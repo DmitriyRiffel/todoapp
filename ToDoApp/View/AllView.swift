@@ -14,7 +14,9 @@ struct AllView: View {
         NavigationStack {
             List {
                 ForEach($toDoItemViewModel.toDoItems) { $toDo in
-                        ToDoItemRowView(toDoItem: $toDo)
+                    ToDoItemRowView(toDoItem: $toDo) {
+                        toDoItemViewModel.reoderItems()
+                    }
                 }
                 .onDelete { IndexSet in
                     for index in IndexSet {
@@ -34,6 +36,9 @@ struct AllView: View {
                 },
                 alignment: .bottomTrailing
             )
+            .onAppear {
+                toDoItemViewModel.reoderItems()
+            }
             .navigationTitle("All")
         }
     }

@@ -15,9 +15,23 @@ struct ToggleButton: View {
                 isCompleted.toggle()
             }
         } label: {
-            Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(isCompleted ? Color.green : Color.red)
+            GeometryReader { proxy in
+                ZStack {
+                    Circle()
+                        .stroke(lineWidth: 2.0)
+                        .foregroundColor(isCompleted ? .green : .red )
+                    
+                    if isCompleted {
+                        Circle()
+                            .frame(width: proxy.size.width * 0.55)
+                            .foregroundStyle(Color.green)
+                    }
+                }
+                .padding(2)
+            }
         }
+        .scaledToFit()
+        .buttonStyle(.borderless)
     }
 }
 

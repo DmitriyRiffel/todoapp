@@ -11,16 +11,20 @@ struct ToDoItemRowView: View {
     @Binding var toDoItem: ToDoItem
     @State private var isEditing: Bool = false
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
+    var onCompletionToggle: () -> Void
     var body: some View {
         HStack() {
-            Button {
-                withAnimation {
-                    toggleCompletion()
-                }
-            } label: {
-                Image(systemName: toDoItem.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(toDoItem.isCompleted ? Color.green : Color.red)
-            }
+            ToggleButton(
+                isCompleted: Binding(
+                    get: { toDoItem.isCompleted },
+                    set: { newValue in
+                        // 2) Сначала обновляем значение в модели
+                        toDoItem.isCompleted = newValue
+                        // 3) Затем вызываем замыкание, которое «дёргает» reorderItems()
+                        onCompletionToggle()
+                    }
+                )
+            )
             VStack(alignment: .leading){
                 Text(toDoItem.title)
                     .font(.headline)
@@ -31,8 +35,10 @@ struct ToDoItemRowView: View {
             }
             .strikethrough(toDoItem.isCompleted ? true : false)
             .foregroundStyle(toDoItem.isCompleted ? Color.gray : .primary)
+            .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
         }
+        .frame(height: 25)
         .swipeActions {
             Button {
                 isEditing.toggle()
@@ -56,9 +62,15 @@ struct ToDoItemRowView: View {
     }
 }
 
-struct ToDoItemRowView_Provider: PreviewProvider {
+struct ToDoItemRow_Previews: PreviewProvider {
+    static let item = ToDoItem(
+        title: "Test Title",
+        note: "Test Description")
     static var previews: some View {
-        ToDoItemRowView(toDoItem: .constant(ToDoItem(title:"Test with Note", isCompleted: true)))
+
+        ToDoItemRowView(toDoItem: .constant(item), onCompletionToggle: {
+            
+        })
             .previewLayout(.fixed(width: 300, height: 70))
     }
 }

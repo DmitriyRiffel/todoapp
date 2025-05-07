@@ -15,7 +15,9 @@ struct CompletedView: View {
             List {
                 ForEach($toDoItemViewModel.toDoItems) { $toDo in
                     if $toDo.wrappedValue.isCompleted {
-                        ToDoItemRowView(toDoItem: $toDo)
+                        ToDoItemRowView(toDoItem: $toDo) {
+                            
+                        }
                     }
                 }
                 .onDelete { IndexSet in
