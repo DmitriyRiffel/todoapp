@@ -12,7 +12,9 @@ import SwiftData
 class ToDoItemViewModel: ObservableObject {
     private let context: ModelContext
     @Published var toDoItems: [ToDoItem] = [
-        ToDoItem(title: "Title 1")
+        ToDoItem(title: "Title 1", scheduledDate: Date()),
+        ToDoItem(title: "Title 2", note: "Note 2"),
+        ToDoItem(title: "Title 3", note: "Note 3", scheduledDate: Date())
     ]
     
     init(context: ModelContext) {
@@ -64,6 +66,18 @@ class ToDoItemViewModel: ObservableObject {
         newItem = ToDoItem(title: title, note: note)
         context.insert(newItem)
         fetchItems()
+    }
+    
+    func createItem(title: String, note: String, scheduledDate: Date) {
+        var newItem: ToDoItem
+        if note == "" {
+            newItem = ToDoItem(title: title, scheduledDate: scheduledDate)
+        }
+        newItem = ToDoItem(title: title, note: note, scheduledDate: scheduledDate)
+        context.insert(newItem)
+        fetchItems()
+        print(newItem.scheduledDate)
+        print(newItem.title)
     }
     
     func amountOfItems(artOfSorting: ArtOfSorting) -> Int {

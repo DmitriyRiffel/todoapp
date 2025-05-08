@@ -13,6 +13,7 @@ class ToDoItem: Identifiable {
     var title: String
     var note: String = ""
     var isCompleted: Bool = false
+    var scheduledDate: Date?
     var id: String
     
     init(title: String) {
@@ -33,5 +34,15 @@ class ToDoItem: Identifiable {
     convenience init(title: String, note: String, isCompleted: Bool) {
         self.init(title: title, isCompleted: isCompleted)
         self.note = note
+    }
+    
+    convenience init(title: String, note: String, scheduledDate: Date) {
+        self.init(title: title, note: note)
+        self.scheduledDate = scheduledDate
+    }
+    
+    convenience init(title: String, scheduledDate: Date) {
+        self.init(title: title)
+        self.scheduledDate = scheduledDate
     }
 }

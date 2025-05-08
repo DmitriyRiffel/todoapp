@@ -11,9 +11,12 @@ struct ToDoItemRowView: View {
     @Binding var toDoItem: ToDoItem
     @State private var isEditing: Bool = false
     @EnvironmentObject var toDoItemViewModel: ToDoItemViewModel
+    let dateFormatter = DateFormatter()
     var onCompletionToggle: () -> Void
     var body: some View {
-        HStack() {
+        dateFormatter.dateFormat = "d. MMM, yyy"
+        dateFormatter.locale = Locale(identifier: "de_DE")
+        return HStack() {
             ToggleButton(
                 isCompleted: Binding(
                     get: { toDoItem.isCompleted },
@@ -25,20 +28,24 @@ struct ToDoItemRowView: View {
                     }
                 )
             )
+            .frame(height: 25)
             VStack(alignment: .leading){
                 Text(toDoItem.title)
                     .font(.headline)
-                    if toDoItem.note != "" {
-                        Text(toDoItem.note)
-                            .font(.subheadline)
-                    }
+                if toDoItem.note != "" {
+                    Text(toDoItem.note)
+                        .font(.subheadline)
+                }
+                if toDoItem.scheduledDate != nil {
+                    
+                    Text(dateFormatter.string(from: toDoItem.scheduledDate!))
+                }
             }
             .strikethrough(toDoItem.isCompleted ? true : false)
             .foregroundStyle(toDoItem.isCompleted ? Color.gray : .primary)
             .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
         }
-        .frame(height: 25)
         .swipeActions {
             Button {
                 isEditing.toggle()
@@ -65,7 +72,9 @@ struct ToDoItemRowView: View {
 struct ToDoItemRow_Previews: PreviewProvider {
     static let item = ToDoItem(
         title: "Test Title",
-        note: "Test Description")
+//        note: "Test Description",
+        scheduledDate: Date()
+    )
     static var previews: some View {
 
         ToDoItemRowView(toDoItem: .constant(item), onCompletionToggle: {
