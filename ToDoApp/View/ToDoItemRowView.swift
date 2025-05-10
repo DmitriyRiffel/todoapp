@@ -37,8 +37,9 @@ struct ToDoItemRowView: View {
                         .font(.subheadline)
                 }
                 if toDoItem.scheduledDate != nil {
-                    
                     Text(dateFormatter.string(from: toDoItem.scheduledDate!))
+                        .font(.system(size: 10))
+                        .foregroundStyle(Color.date)
                 }
             }
             .strikethrough(toDoItem.isCompleted ? true : false)
